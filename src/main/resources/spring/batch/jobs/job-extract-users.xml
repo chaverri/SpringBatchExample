@@ -13,7 +13,7 @@
 	<import resource="../config/context.xml" />
 	<import resource="../config/database.xml" />
 
-	<bean id="itemReader"
+	<bean id="salesReader"
 		class="org.springframework.batch.item.database.JdbcCursorItemReader"
 		scope="step">
 		<property name="dataSource" ref="dataSource" />
@@ -30,6 +30,15 @@
 			<bean class="com.backcountry.SalesRowMapper" />
 		</property>
 	</bean>
+
+    <job id="salesLoaderJob" xmlns="http://www.springframework.org/schema/batch">
+        <step id="step">
+            <tasklet>
+                <chunk reader="salesReader" writer="salesWriter" commit-interval="1000" />
+            </tasklet>
+        </step>
+    </job>
+
 
     <bean id="wishlistReader"
           class="org.springframework.batch.item.database.JdbcCursorItemReader"
@@ -49,14 +58,13 @@
         </property>
     </bean>
 
-	<job id="loaderJob" xmlns="http://www.springframework.org/schema/batch">
+	<job id="likesLoaderJob" xmlns="http://www.springframework.org/schema/batch">
 		<step id="step1">
 			<tasklet>
 				<chunk reader="wishlistReader" writer="wishlistWriter" commit-interval="1000" />
 			</tasklet>
 		</step>
 	</job>
-
 
     <bean id="viewsReader"
           class="org.springframework.batch.item.database.JdbcCursorItemReader"
@@ -81,13 +89,13 @@
     <job id="viewsLoaderJob" xmlns="http://www.springframework.org/schema/batch">
         <step id="load">
             <tasklet>
-                <chunk reader="itemReader" writer="itemWriter"
+                <chunk reader="salesReader" writer="salesWriter"
                        commit-interval="1000" />
             </tasklet>
         </step>
     </job>
 
-	<bean id="itemWriter" class="com.backcountry.writers.PredictionIOWriter">
+	<bean id="salesWriter" class="com.backcountry.writers.PredictionIOWriter">
 	</bean>
 
     <bean id="wishlistWriter" class="com.backcountry.writers.WishlistIOWriter">
