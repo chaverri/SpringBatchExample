@@ -6,6 +6,7 @@ import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.text.Format;
@@ -22,6 +23,7 @@ public class RunScheduler {
     private JobLauncher jobLauncher;
 
     @Autowired
+    @Qualifier("salesLoaderJob")
     private Job job;
 
     public static AtomicInteger total = new AtomicInteger(0);

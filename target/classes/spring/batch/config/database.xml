@@ -12,13 +12,6 @@
           p:driverClassName="org.postgresql.Driver" p:poolPreparedStatements="true" p:maxActive="1"
           p:maxIdle="1" p:username="bcs" p:password="gi2uvibay"/>
 
-    <bean id="wishlistDS" class="oracle.jdbc.pool.OracleDataSource" destroy-method="close">
-        <property name="URL" value="jdbc:oracle:thin:@10.42.35.4:1521/ATGPRD4.pp.bcinfra.net" />
-        <property name="user" value="atg_wishlist"/>
-        <property name="password" value="atgw15hl1st$"/>
-        <property name="connectionCachingEnabled" value="true"/>
-    </bean>
-
     <bean id="transactionManager"
 		class="org.springframework.batch.support.transaction.ResourcelessTransactionManager" />
 	
@@ -28,7 +21,5 @@
 		<jdbc:script location="org/springframework/batch/core/schema-mysql.sql" />
 	</jdbc:initialize-database>
 	-->
-    <bean id="viewsDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" p:url="jdbc:oracle:thin:@oredw1.pp.bcinfra.net:1521/EDW.pp.bcinfra.net"
-          p:driverClassName="com.oracle.jdbc.OracleDriver" p:poolPreparedStatements="true" p:maxActive="1"
-          p:maxIdle="1" p:username="readonly" p:password="readingg0at"/>
+	
 </beans>
