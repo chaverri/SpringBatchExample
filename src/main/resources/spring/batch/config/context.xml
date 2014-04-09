@@ -36,6 +36,7 @@
     </bean>
 
     <task:scheduled-tasks>
-        <task:scheduled ref="runScheduler" method="run" fixed-delay="5000" />
+        <!--<task:scheduled ref="runScheduler" method="run" fixed-delay="5000" />-->
+        <task:scheduled ref="wishlistRunner" method="run" fixed-delay="5000" />
     </task:scheduled-tasks>
 </beans>
