@@ -41,9 +41,9 @@
                             inner join ITEM_LIST IL
                             on I.ITEM_LIST_ID = IL.ID
                             where IL.SITE_CODE = '#{jobParameters['catalog']}'
-                            and  I.RELATIONSHIP_ID > 0
+                            and  I.RELATIONSHIP_ID > '#{jobParameters['relationshipId']}'
                             and rownum &lt;= 1000
-                            order by I.ITEM_LIST_ID asc" />
+                            order by I.RELATIONSHIP_ID asc" />
         <property name="rowMapper">
             <bean class="com.backcountry.pojo.mapper.UserWishlistMapper" />
         </property>

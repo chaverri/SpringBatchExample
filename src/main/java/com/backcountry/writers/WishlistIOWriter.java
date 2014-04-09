@@ -1,9 +1,10 @@
 package com.backcountry.writers;
 
+import com.backcountry.pojo.UserWishlist;
 import io.prediction.Client;
+import io.prediction.UserActionItemRequestBuilder;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.scheduling.annotation.Async;
-import com.backcountry.pojo.UserWishlist;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -33,7 +34,6 @@ public class WishlistIOWriter implements ItemWriter<UserWishlist> {
 
     @Override
     public void write(List<? extends UserWishlist> wl) throws Exception {
-        System.out.println("Xxx" + wl);
         int i = 0;
         int indexToIgnoreFrom = Integer.MAX_VALUE;
 
@@ -62,11 +62,11 @@ public class WishlistIOWriter implements ItemWriter<UserWishlist> {
             if(i >= indexToIgnoreFrom){
                 break;
             }
-            //System.out.println("RESTWriter - Product:"  + action.getItemId() + " - User:" + action.getUserID() + " - Time:" + df.format(action.getTimeStamp()));
+            System.out.println("RESTWriter - Product:"  + action.getProduct() + " - User:" + action.getUser() + " - Relationship:" + action.getRelationshipId());
 
-//            addUser(action);
-//            addItem(action);
-//            addAction(action);
+            addUser(action);
+            addItem(action);
+            addAction(action);
 //
 //            //TODO: Write last date in mongo
 //            //In the mean time it is going to write on a class
@@ -112,21 +112,20 @@ public class WishlistIOWriter implements ItemWriter<UserWishlist> {
         System.out.println("Item added:" + ua.getProduct());
     }
 
-//    @Async
-//    private void addAction(UserWishlist ua){
-//
-//        try {
-//            UserActionItemRequestBuilder builder = client.getUserActionItemRequestBuilder(ua.getUser(), ua.getItemType().toString().toLowerCase(), ua.getProduct()).t(new DateTime(ua.getTimeStamp()));
-//            client.userActionItem(builder);
-//        } catch (IOException e) {
-//            System.out.println("Error saving this item:" + ua.getProduct() + " for this user:" + ua.getUser() + " - " + e.getMessage());
-//        } catch (InterruptedException e) {
-//            System.out.println("Error saving this item:" + ua.getProduct() + " - " + e.getMessage());
-//        } catch (ExecutionException e) {
-//            System.out.println("Error saving this item:" + ua.getProduct() + " - " + e.getMessage());
-//        }
-//
-//        System.out.println("Action added:" + ua.getUser() + " - " + ua.getProduct());
-//    }
+    @Async
+    private void addAction(UserWishlist ua){
+        try {
+            UserActionItemRequestBuilder builder = client.getUserActionItemRequestBuilder(ua.getUser(), ua.getItemType().toString().toLowerCase(), ua.getProduct());
+            client.userActionItem(builder);
+        } catch (IOException e) {
+            System.out.println("Error saving this item:" + ua.getProduct() + " for this user:" + ua.getUser() + " - " + e.getMessage());
+        } catch (InterruptedException e) {
+            System.out.println("Error saving this item:" + ua.getProduct() + " - " + e.getMessage());
+        } catch (ExecutionException e) {
+            System.out.println("Error saving this item:" + ua.getProduct() + " - " + e.getMessage());
+        }
+
+        System.out.println("Action added:" + ua.getUser() + " - " + ua.getProduct());
+    }
 
 }

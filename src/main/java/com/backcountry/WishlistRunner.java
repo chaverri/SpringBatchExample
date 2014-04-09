@@ -9,10 +9,6 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -29,19 +25,16 @@ public class WishlistRunner {
     public static HashSet<String> items = new HashSet<String>();
     public static HashSet<String> users = new HashSet<String>();
 
-    public static Date lastRunDate = new GregorianCalendar(2014, 0, 1).getTime();
+    public static long relationshipId = 0;
 
     public void run() {
 
         try {
-            Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String date = formatter.format(lastRunDate);
-
-            System.out.println("Executing job from datex: " + date);
+            System.out.println("Executing job from relationshipId: " + relationshipId);
 
 
             JobParameters param = new JobParametersBuilder()
-                    .addString("date", date)
+                    .addLong("relationshipId", relationshipId)
                     .addString("catalog", "bcs")
                     .toJobParameters();
 
@@ -50,8 +43,7 @@ public class WishlistRunner {
             System.out.println("Exit Status : " + execution.getStatus());
             System.out.println("Exit Status : " + execution.getAllFailureExceptions());
 
-            date = formatter.format(lastRunDate);
-            System.out.println("Last Run Date : " + date + " - users :" + users.size() + " - items:" + items.size() + " actions:" + total.get());
+            System.out.println("Last Run relationship Id : " + relationshipId + " - users :" + users.size() + " - items:" + items.size() + " actions:" + total.get());
 
 
         } catch (Exception e) {

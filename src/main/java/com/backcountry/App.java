@@ -28,6 +28,7 @@ public class App {
             connection.close();
             System.out.println("Connection OK");
         } catch(Exception e){
+            System.out.println("Connection FAILED");
             e.printStackTrace();
         }
 
